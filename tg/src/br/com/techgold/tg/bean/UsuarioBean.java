@@ -3,7 +3,7 @@ package br.com.techgold.tg.bean;
 import javax.faces.bean.ManagedBean;
 
 import br.com.techgold.tg.dao.DAO;
-import br.com.techgold.tg.modelo.usuario.Usuario;
+import br.com.techgold.tg.modelo.Usuario;
 
 @ManagedBean
 public class UsuarioBean {
@@ -22,6 +22,8 @@ public class UsuarioBean {
 		}
 
 		new DAO<Usuario>(Usuario.class).adiciona(this.usuario);
+		
+		this.usuario = new Usuario();
 		
 	}
 }

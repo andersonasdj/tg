@@ -1,4 +1,4 @@
-package br.com.techgold.tg.modelo.usuario;
+package br.com.techgold.tg.modelo;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
