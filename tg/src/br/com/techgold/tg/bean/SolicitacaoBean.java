@@ -1,5 +1,9 @@
 package br.com.techgold.tg.bean;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -51,5 +55,21 @@ public class SolicitacaoBean {
 
 		this.solicitacao = new Solicitacao();
 
+	}
+	
+	@SuppressWarnings("unused")
+	private static Calendar parseData(String data){
+		try {
+			Date date = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(data);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			return calendar;
+		} catch (ParseException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+	
+	public List<Solicitacao> getSolicitacoes(){
+		return new DAO<Solicitacao>(Solicitacao.class).listaTodos();
 	}
 }

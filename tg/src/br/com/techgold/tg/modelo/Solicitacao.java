@@ -1,9 +1,13 @@
 package br.com.techgold.tg.modelo;
 
+import java.util.Calendar;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Solicitacao {
@@ -25,6 +29,10 @@ public class Solicitacao {
 	private String obs;
 	private String onsiteOffsite;
 	private String classificacao;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	// Grava data ignorando os segundos
+	private Calendar dataAbertura = Calendar.getInstance();
 
 	public void adicionaCliente(Cliente cliente) {
 		this.cliente = cliente;
@@ -116,6 +124,14 @@ public class Solicitacao {
 
 	public void setClassificacao(String classificacao) {
 		this.classificacao = classificacao;
+	}
+
+	public Calendar getDataAbertura() {
+		return dataAbertura;
+	}
+
+	public void setDataAbertura(Calendar dataAbertura) {
+		this.dataAbertura = dataAbertura;
 	}
 
 }
