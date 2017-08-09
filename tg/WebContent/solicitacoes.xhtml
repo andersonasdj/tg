@@ -2,47 +2,122 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
-<h:body>
-	<h1>Nova Solicitação</h1>
-	<h:form>
-		<h:messages />
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-		<fieldset>
-			<legend>Dados da Solicitação</legend>
-			
-			<h:dataTable value="#{solicitacaoBean.solicitacoes}" var="solicitacao">
-				<h:column>
-					<f:facet name="header">ID</f:facet>
-					<h:outputText value="#{solicitacao.id}"/>
-				</h:column>
-			
-				<h:column>
-					<f:facet name="header">Descrição</f:facet>
-					<h:outputText value="#{solicitacao.descricaoProblema}"/>
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Prioridade</f:facet>
-					<h:outputText value="#{solicitacao.prioridade}"/>
-				</h:column>
-			
-				<h:column>
-					<f:facet name="header">Status</f:facet>
-					<h:outputText value="#{solicitacao.status}"/>
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">ID</f:facet>
-					<h:outputText value="#{solicitacao.dataAbertura.time}">con
-						<f:convertDateTime pattern="dd/MM/yyyy"/>
-					</h:outputText>
-				</h:column>
-			
-			</h:dataTable>
-			
-		</fieldset>
+	<ui:composition template="_template.xhtml">
+		<ui:define name="titulo">
+			Listar Solicitações
+		</ui:define>
 
-	</h:form>
-</h:body>
+	<ui:define name="conteudo">
+
+		<h:form>
+			<h:messages />
+	
+			<fieldset>
+				<legend>Dados da Solicitação</legend>
+				
+				<h:dataTable value="#{solicitacaoBean.solicitacoes}" var="solicitacao">
+					<h:column>
+						<f:facet name="header">ID</f:facet>
+						<h:outputText value="#{solicitacao.id}"/>
+					</h:column>
+				
+					<h:column>
+						<f:facet name="header">Descrição</f:facet>
+						<h:outputText value="#{solicitacao.descricaoProblema}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Prioridade</f:facet>
+						<h:outputText value="#{solicitacao.prioridade}"/>
+					</h:column>
+				
+					<h:column>
+						<f:facet name="header">Status</f:facet>
+						<h:outputText value="#{solicitacao.status}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Data Abertura</f:facet>
+						<h:outputText value="#{solicitacao.dataAbertura.time}">con
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Remover</f:facet>
+						<h:commandLink value="Remover" action="#{solicitacaoBean.remover(solicitacao)}"/>
+					</h:column>
+	
+					
+					<h:column>
+						<f:facet name="header">Editar</f:facet>
+						<h:commandLink value="Editar" action="#{solicitacaoBean.editar(solicitacao)}"/>
+					</h:column>
+
+				</h:dataTable>
+				
+			</fieldset>
+			
+			
+			<fieldset>
+				<legend>Cliente</legend>
+				
+				<h:outputLabel value="Selecione o Cliente " for="cliente" />
+				<h:selectOneMenu value="#{solicitacaoBean.clienteId}" id="cliente">
+					<f:selectItems value="#{solicitacaoBean.clientes}" var="cliente" itemLabel="#{cliente.nome}" itemValue="#{cliente.id}" />
+				</h:selectOneMenu>
+				<h:commandButton value="Gravar Cliente" action="#{solicitacaoBean.gravarCliente}">
+					<f:ajax execute="cliente"  />
+				</h:commandButton>
+				
+			</fieldset>
+	
+	
+			<fieldset>
+				<legend>Dados da Solicitação</legend>
+				<h:panelGrid columns="2">
+				
+				
+					<h:outputLabel value="Data de Abertura: " for="dataAbertuta" />
+					<h:inputText id="dataAbertuta" value="#{solicitacaoBean.solicitacao.dataAbertura.time}">
+					  	<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:inputText>
+	
+	
+					<h:outputLabel value="Usuário Afetado: " for="usuarioAfetado" />
+					<h:inputText id="usuarioAfetado" value="#{solicitacaoBean.solicitacao.usuarioAfetado}">
+						<f:validateLength maximum="20"/>
+					</h:inputText>
+					
+	
+					<h:outputLabel value="Prioridade: " for="prioridade" />
+					<h:inputText id="prioridade" value="#{solicitacaoBean.solicitacao.prioridade}" />
+	
+	
+					<h:outputLabel value="Descrição do Problema: "
+						for="descricaoProblema" />
+					<h:inputText id="descricaoProblema" value="#{solicitacaoBean.solicitacao.descricaoProblema}" />
+	
+	
+					<h:outputLabel value="Status: " for="status" />
+					<h:inputText id="status" value="#{solicitacaoBean.solicitacao.status}" />
+	
+	
+					<h:outputLabel value="Observação: " for="obs" />
+					<h:inputText id="obs" value="#{solicitacaoBean.solicitacao.obs}" />
+	
+	
+					<h:commandButton value="Gravar" action="#{solicitacaoBean.gravar}">
+						<f:ajax execute="@form" render="@form"/>
+					</h:commandButton>
+					
+				</h:panelGrid>
+			</fieldset>
+	
+		</h:form>
+	</ui:define>
+	</ui:composition>
 </html>

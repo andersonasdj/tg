@@ -3,6 +3,7 @@ package br.com.techgold.tg.modelo;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -15,10 +16,10 @@ public class Solicitacao {
 	@GeneratedValue
 	private Integer id;
 
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER) //faz com que cliente seja carregado ao carregar solicitacao
 	private Cliente cliente;
 
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER)
 	private Usuario usuario;
 
 	private String usuarioAfetado;
@@ -33,10 +34,6 @@ public class Solicitacao {
 	@Temporal(TemporalType.TIMESTAMP)
 	// Grava data ignorando os segundos
 	private Calendar dataAbertura = Calendar.getInstance();
-
-	public void adicionaCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
 
 	public Integer getId() {
 		return id;
@@ -132,6 +129,16 @@ public class Solicitacao {
 
 	public void setDataAbertura(Calendar dataAbertura) {
 		this.dataAbertura = dataAbertura;
+	}
+	
+	//Adiciona o cliente na solicitação ante de salvar - metodo do link
+	public void adicionaCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
+	//Adiciona o cliente na solicitação ante de salvar - metodo do link
+	public void adicionaUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }
