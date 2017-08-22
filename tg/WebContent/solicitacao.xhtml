@@ -1,87 +1,102 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 		
 	<ui:composition template="_template.xhtml">
 		<ui:define name="titulo">
-			Nova Solicitação
+			<p:outputPanel>Nova Solicitação</p:outputPanel>
 		</ui:define>
 	
 	
 	<ui:define name="conteudo">
+		<br/>
 		<h:form>
-			<h:messages />
-	
-			<fieldset>
-				<legend>Cliente</legend>
-				
-				<h:outputLabel value="Selecione o Cliente " for="cliente" />
-				<h:selectOneMenu value="#{solicitacaoBean.clienteId}" id="cliente">
-					<f:selectItems value="#{solicitacaoBean.clientes}" var="cliente" itemLabel="#{cliente.nome}" itemValue="#{cliente.id}" />
-				</h:selectOneMenu>
-				<h:commandButton value="Gravar Cliente" action="#{solicitacaoBean.gravarCliente}">
-					<f:ajax execute="cliente"  />
-				</h:commandButton>
-				
-			</fieldset>
+			<p:messages />
 			
-			<fieldset>
-				<legend>Funcionario Responsável</legend>
+			<br/>
+			<p:fieldset legend="Cliente">
+				<h:panelGrid columns="3">
 				
-				<h:outputLabel value="Selecione o Funcionário " for="usuario" />
-				<h:selectOneMenu value="#{solicitacaoBean.usuarioId}" id="usuario">
-					<f:selectItems value="#{solicitacaoBean.usuarios}" var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario.id}" />
-				</h:selectOneMenu>
-				<h:commandButton value="Gravar Usuario" action="#{solicitacaoBean.gravarUsuario}">
-					<f:ajax execute="usuario"  />
-				</h:commandButton>
-				
-			</fieldset>
-	
-	
-			<fieldset>
-				<legend>Dados da Solicitação</legend>
-				<h:panelGrid columns="2">
-				
-				
-					<h:outputLabel value="Data de Abertura: " for="dataAbertuta" />
-					<h:inputText id="dataAbertuta" value="#{solicitacaoBean.solicitacao.dataAbertura.time}">
-					  	<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-					</h:inputText>
-	
-	
-					<h:outputLabel value="Usuário Afetado: " for="usuarioAfetado" />
-					<h:inputText id="usuarioAfetado" value="#{solicitacaoBean.solicitacao.usuarioAfetado}">
-						<f:validateLength maximum="20"/>
-					</h:inputText>
+					<p:outputLabel value="Selecione o Cliente " for="cliente" />
 					
-	
-					<h:outputLabel value="Prioridade: " for="prioridade" />
-					<h:inputText id="prioridade" value="#{solicitacaoBean.solicitacao.prioridade}" />
-	
-	
-					<h:outputLabel value="Descrição do Problema: "
-						for="descricaoProblema" />
-					<h:inputText id="descricaoProblema" value="#{solicitacaoBean.solicitacao.descricaoProblema}" />
-	
-	
-					<h:outputLabel value="Status: " for="status" />
-					<h:inputText id="status" value="#{solicitacaoBean.solicitacao.status}" />
-	
-	
-					<h:outputLabel value="Observação: " for="obs" />
-					<h:inputText id="obs" value="#{solicitacaoBean.solicitacao.obs}" />
-	
-	
-					<h:commandButton value="Gravar" action="#{solicitacaoBean.gravar}">
-						<f:ajax execute="@form" render="@form"/>
-					</h:commandButton>
+					<p:selectOneMenu value="#{solicitacaoBean.clienteId}" id="cliente">
+						<f:selectItems value="#{solicitacaoBean.clientes}" var="cliente" itemLabel="#{cliente.nome}" itemValue="#{cliente.id}" />
+					</p:selectOneMenu>
+					
+					<p:commandButton value="Gravar Cliente" action="#{solicitacaoBean.gravarCliente}" update="growl"
+						actionListener="#{solicitacaoBean.solicitacao.addClienteMsg}" styleClass="ui-priority-primary">
+						<f:ajax execute="cliente"  />
+					</p:commandButton>
 					
 				</h:panelGrid>
-			</fieldset>
+			</p:fieldset>
+			
+			<br/>
+			<p:fieldset legend="Funcionario Responsável">
+				<h:panelGrid columns="4">
+					<p:growl id="growl" life="2000" />
+				
+					<p:outputLabel value="Selecione o Funcionário  " for="funcionario" />
+					
+					<p:selectOneMenu value="#{solicitacaoBean.funcionarioId}" id="funcionario">
+						<f:selectItems value="#{solicitacaoBean.funcionarios}" var="funcionario" itemLabel="#{funcionario.nome}" itemValue="#{funcionario.id}" />
+					</p:selectOneMenu>
+					
+					
+					<p:commandButton value="Gravar Usuario" action="#{solicitacaoBean.gravarFuncionario}" update="growl"
+						actionListener="#{solicitacaoBean.solicitacao.addFuncionarioMsg}" styleClass="ui-priority-primary">
+						<f:ajax execute="usuario"/>
+					</p:commandButton>
+					
+					
+				</h:panelGrid>
+			</p:fieldset>
+	
+			<br/>
+			<p:fieldset legend="Dados da Solicitação">
+				<br/>
+				<p:panelGrid columns="2">
+				
+				
+					<p:outputLabel value="Data de Abertura: " for="dataAbertuta" />
+					<p:inputText id="dataAbertuta" value="#{solicitacaoBean.solicitacao.dataAbertura.time}">
+					  	<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</p:inputText>
+	
+	
+					<p:outputLabel value="Usuário Afetado: " for="usuario" />
+					<p:inputText id="usuario" value="#{solicitacaoBean.solicitacao.usuario}">
+						<f:validateLength maximum="20"/>
+					</p:inputText>
+					
+	
+					<p:outputLabel value="Prioridade: " for="prioridade" />
+					<p:inputText id="prioridade" value="#{solicitacaoBean.solicitacao.prioridade}" />
+	
+	
+					<p:outputLabel value="Descrição do Problema: "
+						for="descricaoProblema" />
+					<p:inputText id="descricaoProblema" value="#{solicitacaoBean.solicitacao.descricaoProblema}" />
+	
+	
+					<p:outputLabel value="Status: " for="status" />
+					<p:inputText id="status" value="#{solicitacaoBean.solicitacao.status}" />
+	
+	
+					<p:outputLabel value="Observação: " for="obs" />
+					<p:inputText id="obs" value="#{solicitacaoBean.solicitacao.obs}" />
+	
+	
+					<p:commandButton value="Gravar" action="#{solicitacaoBean.gravar}">
+						<f:ajax execute="@form" render="@form"/>
+					</p:commandButton>
+					
+				</p:panelGrid>
+			</p:fieldset>
 		</h:form>
 	</ui:define>
 </ui:composition>

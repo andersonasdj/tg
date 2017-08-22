@@ -72,7 +72,7 @@ public class DAO<T> {
 
 	public int contaTodos() {
 		EntityManager em = new JPAUtil().getEntityManager();
-		long result = (Long) em.createQuery("select count(n) from usuario n")
+		long result = (Long) em.createQuery("select count(n) from funcionario n")
 				.getSingleResult();
 		em.close();
 

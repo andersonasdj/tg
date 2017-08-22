@@ -2,39 +2,66 @@ package br.com.techgold.tg.modelo;
 
 import java.util.Calendar;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 public class Solicitacao {
+	
 	@Id
 	@GeneratedValue
 	private Integer id;
+	
+	private String abriuChamado;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar agendado;
+	
+	@Lob
+	private String  andamentoDoChamado;
+	
+	private String classificacao;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar dataAbertura = Calendar.getInstance();
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar dataAndamento;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar dataFechamento;
 
+	private String descricaoProblema;
+	
+	private String nivelDeIncidencia;
+	
+	private String obs;
+	
+	private String onsiteOffsite;
+
+	private String prioridade;
+
+	private String resolucao;
+
+	private String status;
+	
+	private String usuario;
+	
 	@OneToOne(fetch=FetchType.EAGER) //faz com que cliente seja carregado ao carregar solicitacao
 	private Cliente cliente;
 
 	@OneToOne(fetch=FetchType.EAGER)
-	private Usuario usuario;
+	private Funcionario funcionario;
 
-	private String usuarioAfetado;
-	private String prioridade;
-	private String descricaoProblema;
-	private String resolucao;
-	private String status;
-	private String obs;
-	private String onsiteOffsite;
-	private String classificacao;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	// Grava data ignorando os segundos
-	private Calendar dataAbertura = Calendar.getInstance();
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -43,36 +70,60 @@ public class Solicitacao {
 		this.id = id;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public String getAbriuChamado() {
+		return abriuChamado;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setAbriuChamado(String abriuChamado) {
+		this.abriuChamado = abriuChamado;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Calendar getAgendado() {
+		return agendado;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setAgendado(Calendar agendado) {
+		this.agendado = agendado;
 	}
 
-	public String getUsuarioAfetado() {
-		return usuarioAfetado;
+	public String getAndamentoDoChamado() {
+		return andamentoDoChamado;
 	}
 
-	public void setUsuarioAfetado(String usuarioAfetado) {
-		this.usuarioAfetado = usuarioAfetado;
+	public void setAndamentoDoChamado(String andamentoDoChamado) {
+		this.andamentoDoChamado = andamentoDoChamado;
 	}
 
-	public String getPrioridade() {
-		return prioridade;
+	public String getClassificacao() {
+		return classificacao;
 	}
 
-	public void setPrioridade(String prioridade) {
-		this.prioridade = prioridade;
+	public void setClassificacao(String classificacao) {
+		this.classificacao = classificacao;
+	}
+
+	public Calendar getDataAbertura() {
+		return dataAbertura;
+	}
+
+	public void setDataAbertura(Calendar dataAbertura) {
+		this.dataAbertura = dataAbertura;
+	}
+
+	public Calendar getDataAndamento() {
+		return dataAndamento;
+	}
+
+	public void setDataAndamento(Calendar dataAndamento) {
+		this.dataAndamento = dataAndamento;
+	}
+
+	public Calendar getDataFechamento() {
+		return dataFechamento;
+	}
+
+	public void setDataFechamento(Calendar dataFechamento) {
+		this.dataFechamento = dataFechamento;
 	}
 
 	public String getDescricaoProblema() {
@@ -83,20 +134,12 @@ public class Solicitacao {
 		this.descricaoProblema = descricaoProblema;
 	}
 
-	public String getResolucao() {
-		return resolucao;
+	public String getNivelDeIncidencia() {
+		return nivelDeIncidencia;
 	}
 
-	public void setResolucao(String resolucao) {
-		this.resolucao = resolucao;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
+	public void setNivelDeIncidencia(String nivelDeIncidencia) {
+		this.nivelDeIncidencia = nivelDeIncidencia;
 	}
 
 	public String getObs() {
@@ -115,30 +158,72 @@ public class Solicitacao {
 		this.onsiteOffsite = onsiteOffsite;
 	}
 
-	public String getClassificacao() {
-		return classificacao;
+	public String getPrioridade() {
+		return prioridade;
 	}
 
-	public void setClassificacao(String classificacao) {
-		this.classificacao = classificacao;
+	public void setPrioridade(String prioridade) {
+		this.prioridade = prioridade;
 	}
 
-	public Calendar getDataAbertura() {
-		return dataAbertura;
+	public String getResolucao() {
+		return resolucao;
 	}
 
-	public void setDataAbertura(Calendar dataAbertura) {
-		this.dataAbertura = dataAbertura;
+	public void setResolucao(String resolucao) {
+		this.resolucao = resolucao;
 	}
-	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
 	//Adiciona o cliente na solicitação ante de salvar - metodo do link
 	public void adicionaCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 	
 	//Adiciona o cliente na solicitação ante de salvar - metodo do link
-	public void adicionaUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void adicionaFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
+	
+	public void addFuncionarioMsg() {
+        String msgFuncionario = "Funcionário adicionado";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msgFuncionario));
+    }
+	
+	public void addClienteMsg() {
+        String msgCliente = "Cliente adicionado";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msgCliente));
+    }
 
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:composition template="_template.xhtml">
+		<ui:define name="titulo">
+			<p:outputPanel>Novo Funcionário</p:outputPanel>
+		</ui:define>
+
+	<br/>
+	<ui:define name="conteudo">
+		<br/>
+		<h:form>
+			<p:fieldset legend="Dados do Funcionário">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Nome: " for="nome"/>
+					<p:inputText id="nome" value="#{funcionarioBean.funcionario.nome}" />
+					
+					<p:outputLabel value="E-mail: " for="email"/>
+					<p:inputText id="email" value="#{funcionarioBean.funcionario.email}">
+						<f:passThroughAttribute name="type" value="email"></f:passThroughAttribute> <!--  para HTML5 -->
+						<f:validateRegex pattern=".+@.+" />
+					</p:inputText>
+					
+					<p:outputLabel value="Usuário: " for="funcionario"/>
+					<p:inputText id="funcionario" value="#{funcionarioBean.funcionario.usuario}"/>
+					
+					<p:outputLabel value="Senha: " for="senha"/>
+					<p:password id="senha" value="#{funcionarioBean.funcionario.senha}" feedback="true"/>
+				 
+			        <h:outputLabel value="Status: " for="status"/>
+			        <p:inputSwitch id="status" value="#{funcionarioBean.funcionario.status}">
+			            <p:ajax listener="#{funcionarioBean.funcionario.addMessage}" update="msg" />
+			        </p:inputSwitch>
+				    
+					<p:dialog header="Values" modal="true" resizable="false" showEffect="fade" widgetVar="dlg">
+				        <h:panelGrid columns="1" id="display">
+				            <h:outputText value="Value 1: #{funcionarioBean.funcionario.status}" />
+				        </h:panelGrid>
+				    </p:dialog>
+					
+					<p:growl id="msg" />
+					<p:commandButton value="Gravar" action="#{funcionarioBean.gravar}" update="@form" process="@form"/>
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+	</ui:composition>
+</html>

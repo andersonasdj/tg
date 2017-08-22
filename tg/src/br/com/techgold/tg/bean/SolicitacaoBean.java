@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.techgold.tg.dao.DAO;
 import br.com.techgold.tg.modelo.Cliente;
 import br.com.techgold.tg.modelo.Solicitacao;
-import br.com.techgold.tg.modelo.Usuario;
+import br.com.techgold.tg.modelo.Funcionario;
 
 @ManagedBean
 @ViewScoped
@@ -22,7 +22,9 @@ public class SolicitacaoBean {
 
 	private Integer clienteId;
 
-	private Integer usuarioId;
+	private Integer funcionarioId;
+
+	private List<Solicitacao> solicitacoes;
 
 	public Integer getClienteId() {
 		return clienteId;
@@ -32,12 +34,12 @@ public class SolicitacaoBean {
 		this.clienteId = clienteId;
 	}
 
-	public Integer getUsuarioId() {
-		return usuarioId;
+	public Integer getFuncionarioId() {
+		return funcionarioId;
 	}
 	
-	public void setUsuarioId(Integer usuarioId) {
-		this.usuarioId = usuarioId;
+	public void setFuncionarioId(Integer funcionarioId) {
+		this.funcionarioId = funcionarioId;
 	}
 
 	public Solicitacao getSolicitacao() {
@@ -50,8 +52,8 @@ public class SolicitacaoBean {
 	}
 	
 	//Retorna lista de usuários para seleção
-	public List<Usuario> getUsuarios(){
-		return new DAO<Usuario>(Usuario.class).listaTodos();
+	public List<Funcionario> getFuncionarios(){
+		return new DAO<Funcionario>(Funcionario.class).listaTodos();
 	}
 
 	//Metodo do link que grava o cliente antes de salvar a solicitacao
@@ -63,11 +65,11 @@ public class SolicitacaoBean {
 	}
 	
 	//Metodo do link que grava o usuário antes de salvar a solicitacao
-	public void gravarUsuario() {
-		Usuario usuario = new DAO<Usuario>(Usuario.class)
-				.buscaPorId(this.usuarioId);
-		this.solicitacao.adicionaUsuario(usuario);
-		System.out.println("Cliente a gravar é " + usuario.getNome());
+	public void gravarFuncionario() {
+		Funcionario funcionario = new DAO<Funcionario>(Funcionario.class)
+				.buscaPorId(this.funcionarioId);
+		this.solicitacao.adicionaFuncionario(funcionario);
+		System.out.println("Funcionario a gravar é " + funcionario.getNome());
 	}
 
 	//grava uma nova solicitacao e edita caso ID seja diferente de null
@@ -103,13 +105,23 @@ public class SolicitacaoBean {
 
 	//retorna todas as solicitações
 	public List<Solicitacao> getSolicitacoes() {
-		return new DAO<Solicitacao>(Solicitacao.class).listaTodos();
+		DAO<Solicitacao> dao = new DAO<Solicitacao>(Solicitacao.class);
+		
+		//realiza um cache caso ja tenha realizado o dao
+		if(this.solicitacoes == null){
+			this.solicitacoes = dao.listaTodos();
+		}
+		
+		return solicitacoes;
 	}
 	
 	//remove uma solicitacao do banco
 	public void remover(Solicitacao solicitacao) {
 		System.out.println("Removendo livro");
-		new DAO<Solicitacao>(Solicitacao.class).remove(solicitacao);
+		DAO<Solicitacao> dao = new DAO<Solicitacao>(Solicitacao.class);
+		dao.remove(solicitacao);
+		//recarrega a pagina devido ao cache
+		this.solicitacoes = dao.listaTodos();
 
 	}
 	
@@ -120,4 +132,6 @@ public class SolicitacaoBean {
 
 		this.solicitacao = solicitacao;
 	}
+	
+	
 }
